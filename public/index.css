@@ -1,0 +1,38 @@
+* {
+    font-family: 'Arial';
+}
+
+.contacts-column .card-title {
+    display: flex;
+    justify-content: space-between;
+}
+.plus-link {
+    width: 24px;
+}
+.plus-link img {
+    width: 100%;
+}
+.column-list {
+    height: 70vh;
+    position: relative;
+    overflow: scroll;
+}
+
+.contact-column .card-title {
+    text-align: center;
+}
+
+.column-list .controls {
+    display: flex;
+    justify-content: flex-end;
+    left: 0;
+    right: 0;
+    padding-top: 20px;
+    position: absolute;
+    bottom: 0;
+}
+
+.create-column .input-group-text,
+.edit-column .input-group-text{
+    width: 120px;
+}
