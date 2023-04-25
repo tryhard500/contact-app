@@ -86,6 +86,9 @@
                     <div class="card-body">
                         <h5 class="card-title mb-3">
                             Новый контакт
+                            {{#if error}}
+                            <span class="badge text-bg-danger">Ошибка</span>
+                            {{/if}}
                         </h5>
 
                         <div class="column-list">
@@ -111,7 +114,7 @@
                                 </div>
 
                                 <div class="controls">
-                                    <button type="submit" class="btn btn-primary">Добавить</button>
+                                    <button type="submit" class="btn btn-primary mb-2 me-2">Добавить</button>
                                 </div>
                             </form>
                         </div>
@@ -126,23 +129,32 @@
                     <div class="card-body">
                         <h5 class="card-title mb-3">
                             Редактировать
+                            {{#if success}}
+                            <span class="badge text-bg-success">Сохранено</span>
+                            {{/if}}
+                            {{#if error}}
+                            <span class="badge text-bg-danger">Ошибка</span>
+                            {{/if}}
                         </h5>
 
                         <div class="column-list">
                             <form action="/contact-edit?id={{contact._id}}" method="POST">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Имя</span>
-                                    <input type="text" value="{{contact.firstName}}" name="firstName" class="form-control">
+                                    <input type="text" value="{{contact.firstName}}" name="firstName"
+                                        class="form-control">
                                 </div>
 
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Фамилия</span>
-                                    <input type="text" value="{{contact.lastName}}" name="lastName" class="form-control">
+                                    <input type="text" value="{{contact.lastName}}" name="lastName"
+                                        class="form-control">
                                 </div>
 
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Телефон</span>
-                                    <input type="tel" value="{{contact.phoneNumber}}" name="phoneNumber" class="form-control">
+                                    <input type="tel" value="{{contact.phoneNumber}}" name="phoneNumber"
+                                        class="form-control">
                                 </div>
 
                                 <div class="input-group mb-3">
@@ -151,7 +163,8 @@
                                 </div>
 
                                 <div class="controls">
-                                    <button type="submit" class="btn btn-primary">Редактировать</button>
+                                    <button type="submit" class="btn btn-primary mb-2 me-2">Сохранить</button>
+                                    <a href="/contact-remove?id={{contact._id}}" class="btn btn-secondary mb-2 me-2">Удалить</a>
                                 </div>
                             </form>
                         </div>

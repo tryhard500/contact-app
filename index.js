@@ -9,6 +9,7 @@ app.listen(port, function () {
 
 // Раздача статики
 app.use(express.static(`public`));
+app.use(express.urlencoded({ extended: true }))
 
 
 // Настройка handlebars
@@ -56,21 +57,23 @@ app.get('/contact-show', async (req, res) => {
 });
 
 app.get('/contact-edit', async (req, res) => {
+    let success = req.query.success;
+    let error = req.query.error;
     let id = req.query.id;
     let contact = await Contact.findOne({ _id: id });
     let contacts = await Contact.find().sort({ lastName: 1 });
     res.render('index', {
         isEdit: true,
         contact: contact,
-        contacts: contacts
+        contacts: contacts,
+        success: success,
+        error: error
     })
 });
 
 app.post('/contact-edit', async (req, res) => {
     let id = req.query.id;
     let contact = await Contact.findOne({ _id: id });
-    console.log(id);
-    console.log(contact);
     contact.firstName = req.body.firstName;
     contact.lastName = req.body.lastName;
     contact.phoneNumber = req.body.phoneNumber;
@@ -82,13 +85,36 @@ app.post('/contact-edit', async (req, res) => {
     } catch (err) {
         res.redirect(`/contact-edit?id=${id}&error=1`);
     }
-    /* 
-        D:\Programming\Lesson\.nodejs projects\contact-app\index.js:74
-    contact.firstName = req.body.firstName;
-                                 ^
 
-    TypeError: Cannot read properties of undefined (reading 'firstName')
-        at D:\Programming\Lesson\.nodejs projects\contact-app\index.js:74:34
-        at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-    */
+});
+
+app.get('/contact-create', async (req, res) => {
+    let err = Boolean(req.query.err);
+    let contacts = await Contact.find().sort({ lastName: 1 });
+    res.render('index', {
+        contacts: contacts,
+        isCreate: true,
+        err: err
+    })
+});
+
+app.post('/contact-create', async (req, res) => {
+    let contact = await Contact({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        phoneNumber: req.body.phoneNumber,
+        email: req.body.email
+    });
+    try {
+        await contact.save();
+        res.redirect('/');
+    } catch (err) {
+        res.redirect('/?err=1')
+    }
+});
+
+app.get('/contact-remove',async (req,res)=>{
+    let id = req.query.id;
+    await Contact.deleteOne({_id:id});
+    res.redirect('/');
 });
